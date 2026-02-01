@@ -14,6 +14,7 @@ import type { FeatureCard, FooterSection, NavItem } from '@/types'
  */
 export const NAV_ITEMS: NavItem[] = [
   { label: 'Features', href: '#features' },
+  { label: 'Examples', href: '/examples' },
   { label: 'Documentation', href: '#docs' },
   { label: 'GitHub', href: 'https://github.com' },
 ]
