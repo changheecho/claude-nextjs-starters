@@ -28,6 +28,7 @@ export function FormsSection() {
               id="email-input"
               type="email"
               placeholder="이메일을 입력하세요"
+              autoComplete="email"
             />
           </div>
           <div className="space-y-2">
@@ -36,6 +37,7 @@ export function FormsSection() {
               id="password-input"
               type="password"
               placeholder="비밀번호를 입력하세요"
+              autoComplete="current-password"
             />
           </div>
           <div className="space-y-2">
@@ -79,7 +81,7 @@ export function FormsSection() {
               </div>
               <div className="space-y-2">
                 <Label htmlFor="signup-email">이메일</Label>
-                <Input id="signup-email" type="email" placeholder="이메일" />
+                <Input id="signup-email" type="email" placeholder="이메일" autoComplete="email" />
               </div>
               <div className="space-y-2">
                 <Label htmlFor="signup-password">비밀번호</Label>
@@ -87,6 +89,7 @@ export function FormsSection() {
                   id="signup-password"
                   type="password"
                   placeholder="비밀번호"
+                  autoComplete="new-password"
                 />
               </div>
               <Button type="submit" className="w-full">
