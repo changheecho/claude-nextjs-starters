@@ -16,34 +16,19 @@ source "$SCRIPT_DIR/lib/slack-utils.sh"
 INPUT_JSON=$(cat)
 log_debug "PermissionRequest 이벤트 발생: $INPUT_JSON"
 
-# JSON 파싱
-TOOL_NAME=$(echo "$INPUT_JSON" | jq -r '.tool_name // "알 수 없음"')
-TOOL_DESCRIPTION=$(echo "$INPUT_JSON" | jq -r '.tool_input.description // ""')
-TOOL_COMMAND=$(echo "$INPUT_JSON" | jq -r '.tool_input.command // ""')
-
-# Slack 메시지 본문 구성
-MESSAGE_BODY="*도구*: \`$TOOL_NAME\`"
-
-if [ -n "$TOOL_DESCRIPTION" ]; then
-  MESSAGE_BODY="$MESSAGE_BODY\n*설명*: $TOOL_DESCRIPTION"
+# 프로젝트 이름 추출
+PROJECT_NAME="claude-nextjs-starters"
+if [ -f "$CLAUDE_PROJECT_DIR/package.json" ]; then
+  PROJECT_NAME=$(jq -r '.name // "claude-nextjs-starters"' "$CLAUDE_PROJECT_DIR/package.json")
 fi
 
-if [ -n "$TOOL_COMMAND" ] && [ "$TOOL_COMMAND" != "null" ]; then
-  # 명령어가 200자 넘으면 축약
-  if [ ${#TOOL_COMMAND} -gt 200 ]; then
-    TOOL_COMMAND_SHORT="${TOOL_COMMAND:0:200}..."
-  else
-    TOOL_COMMAND_SHORT="$TOOL_COMMAND"
-  fi
-  MESSAGE_BODY="$MESSAGE_BODY\n*명령어*:\n\`\`\`$TOOL_COMMAND_SHORT\`\`\`"
-fi
-
-MESSAGE_BODY="$MESSAGE_BODY\n\n_Claude Code가 도구 사용 권한을 요청하고 있습니다._"
+# 간결한 포맷으로 메시지 구성
+MESSAGE_BODY="*프로젝트*: $PROJECT_NAME\n*상태*: 권한 요청\n*시간*: $(date '+%Y-%m-%d %H:%M:%S')"
 
 # Slack 메시지 전송
 send_slack_message \
   "permission_request" \
-  "Claude Code 권한 요청" \
+  "Notification - 권한 요청 시 알림" \
   "$MESSAGE_BODY"
 
 # 항상 성공 (Claude Code 작업 방해 방지)

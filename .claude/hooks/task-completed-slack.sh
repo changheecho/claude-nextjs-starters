@@ -16,31 +16,19 @@ source "$SCRIPT_DIR/lib/slack-utils.sh"
 INPUT_JSON=$(cat)
 log_debug "TaskCompleted 이벤트 발생: $INPUT_JSON"
 
-# JSON 파싱
-TASK_ID=$(echo "$INPUT_JSON" | jq -r '.task_id // "알 수 없음"')
-TASK_SUBJECT=$(echo "$INPUT_JSON" | jq -r '.subject // "제목 없음"')
-TASK_STATUS=$(echo "$INPUT_JSON" | jq -r '.status // "unknown"')
-TASK_DESCRIPTION=$(echo "$INPUT_JSON" | jq -r '.description // ""')
-
-# Slack 메시지 본문 구성
-MESSAGE_BODY="*작업 ID*: #$TASK_ID\n*제목*: $TASK_SUBJECT\n*상태*: \`$TASK_STATUS\`"
-
-if [ -n "$TASK_DESCRIPTION" ] && [ "$TASK_DESCRIPTION" != "null" ]; then
-  # 설명이 300자 넘으면 축약
-  if [ ${#TASK_DESCRIPTION} -gt 300 ]; then
-    TASK_DESCRIPTION_SHORT="${TASK_DESCRIPTION:0:300}..."
-  else
-    TASK_DESCRIPTION_SHORT="$TASK_DESCRIPTION"
-  fi
-  MESSAGE_BODY="$MESSAGE_BODY\n\n*설명*:\n$TASK_DESCRIPTION_SHORT"
+# 프로젝트 이름 추출
+PROJECT_NAME="claude-nextjs-starters"
+if [ -f "$CLAUDE_PROJECT_DIR/package.json" ]; then
+  PROJECT_NAME=$(jq -r '.name // "claude-nextjs-starters"' "$CLAUDE_PROJECT_DIR/package.json")
 fi
 
-MESSAGE_BODY="$MESSAGE_BODY\n\n_작업이 완료되었습니다._"
+# 간결한 포맷으로 메시지 구성
+MESSAGE_BODY="*프로젝트*: $PROJECT_NAME\n*상태*: 작업 완료\n*시간*: $(date '+%Y-%m-%d %H:%M:%S')"
 
 # Slack 메시지 전송
 send_slack_message \
   "task_completed" \
-  "Claude Code 작업 완료" \
+  "Stop - 작업 완료 시 알림" \
   "$MESSAGE_BODY"
 
 # 항상 성공 (Claude Code 작업 방해 방지)
