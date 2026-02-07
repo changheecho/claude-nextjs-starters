@@ -8,26 +8,51 @@ import {
 } from 'lucide-react'
 
 import type { FeatureCard, FooterSection, NavItem } from '@/types'
+import { GITHUB_URL, TWITTER_URL, LINKEDIN_URL } from '@/lib/env'
 
 /**
- * [보안] 환경 변수를 통한 소셜 링크 관리
+ * 메인 네비게이션 아이템 배열
+ *
+ * 헤더의 데스크톱 네비게이션 메뉴에 표시되는 링크 목록
+ * GitHub 링크는 src/lib/env.ts의 환경 변수에서 가져옵니다.
+ *
+ * @used
+ * - src/components/layout/header.tsx (Desktop navigation)
+ * - src/components/layout/mobile-nav.tsx (Mobile navigation)
+ *
+ * @example
+ * NAV_ITEMS.map(item => (
+ *   <Link key={item.href} href={item.href}>{item.label}</Link>
+ * ))
  *
  * @security Information Disclosure 방어
- * @issue 네비게이션의 외부 링크가 소스 코드에 하드코딩되어 다음 문제 발생:
- *        - 소셜 미디어 계정 변경 시 코드 수정 필요
- *        - 프로젝트마다 다른 소셜 계정을 사용할 경우 환경 변수로 관리할 수 없음
- * @reference https://nextjs.org/docs/app/building-your-application/configuring/environment-variables
- * @updated 2026-02-07
+ * GitHub URL은 환경 변수(NEXT_PUBLIC_GITHUB_URL)를 통해 관리되어
+ * 프로젝트마다 다른 저장소를 설정할 수 있습니다.
  */
 export const NAV_ITEMS: NavItem[] = [
   { label: 'Features', href: '#features' },
   { label: 'Examples', href: '/examples' },
   { label: 'Documentation', href: '#docs' },
-  { label: 'GitHub', href: process.env.NEXT_PUBLIC_GITHUB_URL || 'https://github.com' },
+  { label: 'GitHub', href: GITHUB_URL },
 ]
 
 /**
- * 기능 목록 (Features 섹션용)
+ * 기능 카드 배열 (Features 섹션용)
+ *
+ * 메인 페이지의 Features 섹션에 표시될 기능 카드 목록
+ * 각 카드는 제목, 설명, lucide-react 아이콘을 포함합니다.
+ *
+ * @used
+ * - src/components/sections/features.tsx
+ *
+ * @example
+ * FEATURES.map(feature => (
+ *   <Card key={feature.title}>
+ *     <feature.icon className="h-8 w-8" />
+ *     <h3>{feature.title}</h3>
+ *     <p>{feature.description}</p>
+ *   </Card>
+ * ))
  */
 export const FEATURES: FeatureCard[] = [
   {
@@ -64,6 +89,24 @@ export const FEATURES: FeatureCard[] = [
 
 /**
  * 푸터 섹션 데이터
+ *
+ * 푸터의 3열 그리드 레이아웃에 표시될 링크 섹션들
+ * Product, Resources, Company 카테고리별로 분류된 내부 링크를 포함합니다.
+ *
+ * @used
+ * - src/components/layout/footer.tsx (Footer sections)
+ *
+ * @example
+ * FOOTER_SECTIONS.map(section => (
+ *   <div key={section.title}>
+ *     <h3>{section.title}</h3>
+ *     <ul>
+ *       {section.items.map(item => (
+ *         <li key={item.href}><Link href={item.href}>{item.label}</Link></li>
+ *       ))}
+ *     </ul>
+ *   </div>
+ * ))
  */
 export const FOOTER_SECTIONS: FooterSection[] = [
   {
@@ -93,17 +136,37 @@ export const FOOTER_SECTIONS: FooterSection[] = [
 ]
 
 /**
- * [보안] 환경 변수를 통한 소셜 링크 관리
+ * 소셜 미디어 링크 배열
  *
- * @security Information Disclosure 방어
- * @issue 소셜 링크가 소스 코드에 하드코딩되어 다음 문제 발생:
- *        - 소셜 미디어 계정 변경 시 코드 수정 필요
- *        - 프로젝트마다 다른 소셜 계정을 사용할 경우 환경 변수로 관리할 수 없음
- * @reference https://nextjs.org/docs/app/building-your-application/configuring/environment-variables
- * @updated 2026-02-07
+ * 푸터 하단에 표시되는 소셜 미디어 링크
+ * GitHub, Twitter, LinkedIn 등의 외부 링크를 포함합니다.
+ *
+ * 모든 URL은 src/lib/env.ts의 환경 변수에서 가져옵니다:
+ * - NEXT_PUBLIC_GITHUB_URL
+ * - NEXT_PUBLIC_TWITTER_URL
+ * - NEXT_PUBLIC_LINKEDIN_URL
+ *
+ * @used
+ * - src/components/layout/footer.tsx (Social links section)
+ *
+ * @example
+ * SOCIAL_LINKS.map(link => (
+ *   <a
+ *     key={link.name}
+ *     href={link.href}
+ *     target="_blank"
+ *     rel="noopener noreferrer"
+ *   >
+ *     {link.name}
+ *   </a>
+ * ))
+ *
+ * @security Tabnabbing 공격 방지
+ * 외부 링크는 target="_blank" rel="noopener noreferrer" 속성 필수
+ * @reference https://owasp.org/www-community/attacks/reverse_tabnabbing
  */
 export const SOCIAL_LINKS = [
-  { name: 'GitHub', href: process.env.NEXT_PUBLIC_GITHUB_URL || 'https://github.com' },
-  { name: 'Twitter', href: process.env.NEXT_PUBLIC_TWITTER_URL || 'https://twitter.com' },
-  { name: 'LinkedIn', href: process.env.NEXT_PUBLIC_LINKEDIN_URL || 'https://linkedin.com' },
+  { name: 'GitHub', href: GITHUB_URL },
+  { name: 'Twitter', href: TWITTER_URL },
+  { name: 'LinkedIn', href: LINKEDIN_URL },
 ]
