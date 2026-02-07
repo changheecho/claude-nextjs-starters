@@ -31,7 +31,10 @@ yarn-error.log*
 .pnpm-debug.log*
 
 # env files (can opt-in for committing if needed)
-.env*
+.env
+.env.local
+.env.*.local
+# .env.example은 버전 관리에 포함 (환경 변수 가이드)
 
 # vercel
 .vercel

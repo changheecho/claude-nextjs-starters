@@ -24,7 +24,7 @@ export const metadata: Metadata = {
     title: 'Next.js 16 Modern Starter Kit',
     description:
       'Next.js v16 + TypeScript + TailwindCSS v4 + shadcn/ui 기반의 프로덕션 레디 웹 스타터킷',
-    url: 'https://example.com',
+    url: process.env.NEXT_PUBLIC_SITE_URL || 'https://example.com', // 환경 변수를 통한 URL 관리
     siteName: 'Next.js Starter Kit',
   },
   twitter: {

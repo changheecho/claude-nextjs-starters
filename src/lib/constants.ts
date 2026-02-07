@@ -10,13 +10,20 @@ import {
 import type { FeatureCard, FooterSection, NavItem } from '@/types'
 
 /**
- * 네비게이션 메뉴 데이터
+ * [보안] 환경 변수를 통한 소셜 링크 관리
+ *
+ * @security Information Disclosure 방어
+ * @issue 네비게이션의 외부 링크가 소스 코드에 하드코딩되어 다음 문제 발생:
+ *        - 소셜 미디어 계정 변경 시 코드 수정 필요
+ *        - 프로젝트마다 다른 소셜 계정을 사용할 경우 환경 변수로 관리할 수 없음
+ * @reference https://nextjs.org/docs/app/building-your-application/configuring/environment-variables
+ * @updated 2026-02-07
  */
 export const NAV_ITEMS: NavItem[] = [
   { label: 'Features', href: '#features' },
   { label: 'Examples', href: '/examples' },
   { label: 'Documentation', href: '#docs' },
-  { label: 'GitHub', href: 'https://github.com' },
+  { label: 'GitHub', href: process.env.NEXT_PUBLIC_GITHUB_URL || 'https://github.com' },
 ]
 
 /**
@@ -86,10 +93,17 @@ export const FOOTER_SECTIONS: FooterSection[] = [
 ]
 
 /**
- * 소셜 링크 데이터
+ * [보안] 환경 변수를 통한 소셜 링크 관리
+ *
+ * @security Information Disclosure 방어
+ * @issue 소셜 링크가 소스 코드에 하드코딩되어 다음 문제 발생:
+ *        - 소셜 미디어 계정 변경 시 코드 수정 필요
+ *        - 프로젝트마다 다른 소셜 계정을 사용할 경우 환경 변수로 관리할 수 없음
+ * @reference https://nextjs.org/docs/app/building-your-application/configuring/environment-variables
+ * @updated 2026-02-07
  */
 export const SOCIAL_LINKS = [
-  { name: 'GitHub', href: 'https://github.com' },
-  { name: 'Twitter', href: 'https://twitter.com' },
-  { name: 'LinkedIn', href: 'https://linkedin.com' },
+  { name: 'GitHub', href: process.env.NEXT_PUBLIC_GITHUB_URL || 'https://github.com' },
+  { name: 'Twitter', href: process.env.NEXT_PUBLIC_TWITTER_URL || 'https://twitter.com' },
+  { name: 'LinkedIn', href: process.env.NEXT_PUBLIC_LINKEDIN_URL || 'https://linkedin.com' },
 ]
