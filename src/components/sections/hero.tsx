@@ -1,11 +1,30 @@
 import { Button } from '@/components/ui/button'
 import { Container } from '@/components/common/container'
 import { Section } from '@/components/common/section'
+import { GITHUB_URL } from '@/lib/env'
 import Link from 'next/link'
 
 /**
  * Hero 섹션 컴포넌트
- * 메인 헤드라인, 서브 헤드라인, CTA 버튼 포함
+ *
+ * 메인 헤드라인, 서브 헤드라인, CTA 버튼을 포함하는
+ * 랜딩 페이지의 최상단 섹션입니다.
+ *
+ * Features:
+ * - 대형 헤드라인 (반응형 텍스트 크기)
+ * - 서브 헤드라인 및 설명
+ * - 2개의 CTA 버튼 (내부 링크, 외부 링크)
+ * - 배경 그라데이션 효과
+ *
+ * 보안:
+ * - GitHub 링크를 환경 변수에서 가져옴 (GITHUB_URL)
+ * - 외부 링크에 target="_blank" rel="noopener noreferrer" 적용
+ * - Tabnabbing 공격 방지
+ *
+ * @returns Hero 섹션 엘리먼트
+ *
+ * @used
+ * - src/app/page.tsx (홈페이지 최상단)
  */
 export function HeroSection() {
   return (
@@ -37,7 +56,12 @@ export function HeroSection() {
               <Link href="#features">Features 보기</Link>
             </Button>
             <Button size="lg" variant="outline" asChild>
-              <a href="https://github.com" target="_blank" rel="noopener noreferrer">
+              <a
+                href={GITHUB_URL}
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label="GitHub에서 보기 (새 창에서 열림)"
+              >
                 GitHub에서 보기
               </a>
             </Button>
