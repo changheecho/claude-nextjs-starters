@@ -22,11 +22,13 @@ if [ -f "$CLAUDE_PROJECT_DIR/package.json" ]; then
   PROJECT_NAME=$(jq -r '.name // "claude-nextjs-starters"' "$CLAUDE_PROJECT_DIR/package.json")
 fi
 
+MESSAGE=$(jq -r '.hook_event_name // "unknown"' <<< "$INPUT_JSON")
+
 # 간결한 포맷으로 메시지 구성
 MESSAGE_BODY=$(cat <<EOF
 *프로젝트*: $PROJECT_NAME
 
-*상태*: 작업 완료
+*상태*: $MESSAGE
 *시간*: $(date '+%Y-%m-%d %H:%M:%S')
 EOF
 )
