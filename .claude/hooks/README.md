@@ -54,7 +54,7 @@ Claude Code의 Hook 시스템을 활용하여 Slack으로 실시간 알림을 �
 6. **Allow** 클릭
 7. **Webhook URL** 복사
    ```
-   https://hooks.slack.com/services/T00000000/B00000000/XXXXXXXXXXXXXXXXXXXXXXXX
+   https://hooks.slack.com/services/[WORKSPACE-ID]/[CHANNEL-ID]/[WEBHOOK-TOKEN]
    ```
 
 ### 2단계: 환경변수 설정
