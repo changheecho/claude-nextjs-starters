@@ -98,10 +98,25 @@ send_slack_message() {
     }')
 
   # Slack Webhook 전송 (타임아웃 5초)
-  curl -s -X POST "$SLACK_WEBHOOK_URL" \
+  local curl_response
+  local curl_exit_code
+
+  curl_response=$(curl -s -w "\n%{http_code}" -X POST "$SLACK_WEBHOOK_URL" \
     -H 'Content-Type: application/json' \
     --max-time 5 \
-    -d "$payload" > /dev/null 2>&1
+    -d "$payload" 2>&1)
+  curl_exit_code=$?
 
-  return 0
+  # HTTP 상태 코드 추출
+  local http_code=$(echo "$curl_response" | tail -n1)
+  local response_body=$(echo "$curl_response" | sed '$d')
+
+  # 성공 여부 로깅
+  if [ $curl_exit_code -eq 0 ] && [ "$http_code" = "200" ]; then
+    log_debug "Slack 메시지 전송 성공: HTTP $http_code"
+    return 0
+  else
+    log_debug "Slack 메시지 전송 실패: curl_exit_code=$curl_exit_code, HTTP=$http_code, Response=$response_body"
+    return 1
+  fi
 }
