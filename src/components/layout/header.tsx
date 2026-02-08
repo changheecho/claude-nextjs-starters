@@ -3,6 +3,7 @@ import { Container } from '@/components/common/container'
 import { NAV_ITEMS } from '@/lib/constants'
 import Link from 'next/link'
 import { MobileNav } from './mobile-nav'
+import { Button } from '@/components/ui/button'
 
 /**
  * 헤더 콘텐츠 컴포넌트 (서버 컴포넌트)
@@ -62,7 +63,12 @@ export function Header() {
         </nav>
 
         {/* 우측 액션 버튼 */}
-        <div className="flex items-center space-x-2">
+        <div className="flex items-center space-x-4">
+          <Link href="/login" className="hidden sm:block">
+            <Button variant="outline" size="sm">
+              로그인
+            </Button>
+          </Link>
           <ThemeToggle />
           <MobileNav />
         </div>
